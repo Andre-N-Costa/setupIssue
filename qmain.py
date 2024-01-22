@@ -26,9 +26,11 @@ app = QApplication(sys.argv)
 
 widget = Widget(issue_list)
 widget.resize(500, 50)
-widget.setStyleSheet("""
-    font-size: 15px;
-""")
+
+with open(r"C:\Users\andre.costa\Desktop\random code\setupIssue\style.qss", "r") as f:
+    _style = f.read()
+    app.setStyleSheet(_style)
+
 widget.show()
 
 app.exec()

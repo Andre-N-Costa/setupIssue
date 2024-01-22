@@ -63,6 +63,11 @@ class IssueWindow(QWidget):
         self.note_text_edit = QPlainTextEdit()
         self.note_text_edit.setPlainText(notes)
 
+        #Label that stays in the bottom of the window and gives information about the user actions
+
+        self.info = QLabel("")
+        self.info.setProperty("type",1)
+
         # Buttons creation and connection to methods on click
         buttonS = QPushButton("Back")
         buttonS.clicked.connect(self.back)
@@ -83,6 +88,7 @@ class IssueWindow(QWidget):
         issue_layout.addLayout(buttons_layout)
         issue_layout.addWidget(buttonR)
         issue_layout.addWidget(self.note_text_edit)
+        issue_layout.addWidget(self.info)
 
         self.setLayout(issue_layout)
 
@@ -104,11 +110,12 @@ class IssueWindow(QWidget):
         """
         Adds note_text_edit a new preset of notes
         """
-        print("Adding Notes...")
+        print("Adding Comment...")
         now = datetime.now()
         self.note_text_edit.appendPlainText(
             "%%%%%%%%%%%%%%%%%%%%% ISSUE " + self.issue.number + " NOTES %%%%%%%%%%%%%%%%%%%%% " + "\n\n--------IMPORTANT PATHS:\n\n--------PROBLEM DESCRIPTION:\n\n--------POSSIBLE SOLUTION:\n\n" + "%%%%%%%%%%%%%%%% CREATED: " + str(
                 now)[:19] + " %%%%%%%%%%%%%%%%\n\n")
+        self.info.setText("Added comment!")
 
     def save(self):
         """
@@ -119,3 +126,4 @@ class IssueWindow(QWidget):
         f.close()
 
         print("Saved!")
+        self.info.setText("Saved!")

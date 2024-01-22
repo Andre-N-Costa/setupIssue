@@ -28,14 +28,15 @@ class Issue:
     """
 
     def __init__(self, number):
-        self.number = number
-        self.path = r"C:\Users\andre.costa\Desktop\Farmatodo\Issues" + '\\' + number
-        os.chdir(r"C:\Users\andre.costa\Desktop\Farmatodo\Issues")
         try:
+            self.number = number
+            self.path = r"C:\Users\andre.costa\Desktop\Farmatodo\Issues" + '\\' + number
+            os.chdir(r"C:\Users\andre.costa\Desktop\Farmatodo\Issues")
             os.mkdir(number)
             self.addNotes()
             print("Created Issue " + number)
         except:
+            self.number = -1
             messagebox.showwarning("!PROBLEM!", "Not possible to create Issue " + number)
 
     def addNotes(self):

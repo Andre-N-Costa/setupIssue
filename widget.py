@@ -56,6 +56,8 @@ class Widget(QWidget):
         # User input for the Issue Number
         label = QLabel("Issue Number : ")
         self.line_edit = QLineEdit()
+        self.info = QLabel("")
+        self.info.setProperty("type",1)
 
         # Buttons creation and connection to methods on click
         buttonC = QPushButton("Create")
@@ -80,6 +82,7 @@ class Widget(QWidget):
         menu_layout = QVBoxLayout()
         menu_layout.addLayout(number_layout)
         menu_layout.addLayout(buttons_layout)
+        menu_layout.addWidget(self.info)
 
         self.setLayout(menu_layout)
 
@@ -88,6 +91,7 @@ class Widget(QWidget):
         with open('issuesfile.pkl', 'wb') as outp:
             pickle.dump(self.issue_list, outp, pickle.HIGHEST_PROTOCOL)
         print("Saved!")
+        self.info.setText("Saved!")
     def createIssue(self):
         """
         It's created an Issue object, stored that object in issues_list and saved all the
@@ -96,8 +100,12 @@ class Widget(QWidget):
         issue = Issue(self.line_edit.text())
         self.issue_list.append(issue)
 
-        self.save()
-
+        # Test if the issue was created successfully
+        if issue.number != -1:
+            self.save()
+            self.info.setText(f"Issue {self.line_edit.text()} Created")
+        else:
+            self.info.setText(f"Issue {self.line_edit.text()} Not Created")
         print(f"Issue {self.line_edit.text()} Created")
 
     def openIssue(self):
@@ -113,6 +121,7 @@ class Widget(QWidget):
                 self.issuewindow.resize(750, 500)
                 self.issuewindow.show()
                 print(f"Issue {self.line_edit.text()} Opened")
+                self.info.setText(f"Issue {self.line_edit.text()} Opened")
 
         if not(found):
             self.errorNonExistentPrompt()
@@ -129,6 +138,7 @@ class Widget(QWidget):
                 shutil.rmtree(i.path)
                 self.save()
                 print("Deleted Issue " + self.line_edit.text())
+                self.info.setText("Deleted Issue " + self.line_edit.text())
                 return
         self.errorNonExistentPrompt()
 
