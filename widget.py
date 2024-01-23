@@ -1,7 +1,9 @@
 import os
 import pickle
 import shutil
+import threading
 
+from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox
 
 from IssueClass import Issue
@@ -58,6 +60,8 @@ class Widget(QWidget):
         self.line_edit = QLineEdit()
         self.info = QLabel("")
         self.info.setProperty("type",1)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.cleanLabel)
 
         # Buttons creation and connection to methods on click
         buttonC = QPushButton("Create")
@@ -92,6 +96,7 @@ class Widget(QWidget):
             pickle.dump(self.issue_list, outp, pickle.HIGHEST_PROTOCOL)
         print("Saved!")
         self.info.setText("Saved!")
+        self.timer.start(5000)
     def createIssue(self):
         """
         It's created an Issue object, stored that object in issues_list and saved all the
@@ -107,6 +112,7 @@ class Widget(QWidget):
         else:
             self.info.setText(f"Issue {self.line_edit.text()} Not Created")
         print(f"Issue {self.line_edit.text()} Created")
+        self.timer.start(5000)
 
     def openIssue(self):
         """
@@ -122,9 +128,14 @@ class Widget(QWidget):
                 self.issuewindow.show()
                 print(f"Issue {self.line_edit.text()} Opened")
                 self.info.setText(f"Issue {self.line_edit.text()} Opened")
+                self.timer.start(5000)
 
         if not(found):
             self.errorNonExistentPrompt()
+
+    def cleanLabel(self):
+        self.info.setText("")
+        self.timer.stop()
 
     def deleteIssue(self):
         """
@@ -139,6 +150,7 @@ class Widget(QWidget):
                 self.save()
                 print("Deleted Issue " + self.line_edit.text())
                 self.info.setText("Deleted Issue " + self.line_edit.text())
+                self.timer.start(5000)
                 return
         self.errorNonExistentPrompt()
 

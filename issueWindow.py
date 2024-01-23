@@ -1,5 +1,6 @@
 import webbrowser
 
+from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QLineEdit, QPlainTextEdit
 from datetime import datetime
 
@@ -67,6 +68,8 @@ class IssueWindow(QWidget):
 
         self.info = QLabel("")
         self.info.setProperty("type",1)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.cleanLabel)
 
         # Buttons creation and connection to methods on click
         buttonS = QPushButton("Back")
@@ -92,6 +95,10 @@ class IssueWindow(QWidget):
 
         self.setLayout(issue_layout)
 
+    def cleanLabel(self):
+        self.info.setText("")
+        self.timer.stop()
+
     def back(self):
         """
         Closes the current window
@@ -113,9 +120,10 @@ class IssueWindow(QWidget):
         print("Adding Comment...")
         now = datetime.now()
         self.note_text_edit.appendPlainText(
-            "%%%%%%%%%%%%%%%%%%%%% ISSUE " + self.issue.number + " NOTES %%%%%%%%%%%%%%%%%%%%% " + "\n\n--------IMPORTANT PATHS:\n\n--------PROBLEM DESCRIPTION:\n\n--------POSSIBLE SOLUTION:\n\n" + "%%%%%%%%%%%%%%%% CREATED: " + str(
-                now)[:19] + " %%%%%%%%%%%%%%%%\n\n")
+            "%%%%%%%%%%%%%%%%%%%%% ISSUE " + self.issue.number + " NOTES %%%%%%%%%%%%%%%%%%%%% " + "\n\n--------PROBLEM DESCRIPTION:\n\n--------OBSERVATIONS:\n\n--------POSSIBLE SOLUTION:\n\n" + "%%%%%%%%%%%%%%%%%% CREATED: " + str(
+                now)[:19] + " %%%%%%%%%%%%%%%%%%\n\n")
         self.info.setText("Added comment!")
+        self.timer.start(5000)
 
     def save(self):
         """
@@ -127,3 +135,11 @@ class IssueWindow(QWidget):
 
         print("Saved!")
         self.info.setText("Saved!")
+        self.timer.start(5000)
+
+    """ Function that finds the text selected whats selected
+    def handleSelectionChanged(self):
+        cursor = self.edit.textCursor()
+        print("Selection start: %d end: %d" %
+              (cursor.selectionStart(), cursor.selectionEnd()))
+    """

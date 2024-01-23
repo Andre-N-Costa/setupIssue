@@ -1,26 +1,22 @@
 
 QWidget{
 background-color:#383335;
+font-family: "Times New Roman";
 }
 
 QLabel[type="1"]{
 font-size: 13px;
-color: white;
-font-family: "Times New Roman";
+color: lightgray;
 font-style: italic;
 }
 
 QLabel{
 font-size: 17px;
 color: white;
-font-family: "Times New Roman";
 }
-
-
 
 QPushButton{
 font-size: 15px;
-font-family: "Times New Roman";
 padding: 10px;
 background-color:#c42d50;
 color: white;

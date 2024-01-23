@@ -44,6 +44,6 @@ class Issue:
         now = datetime.now()
         file = open('Notes.txt', 'a')
         file.write(
-            "%%%%%%%%%%%%%%%%%%%%%% ISSUE " + self.number + " NOTES %%%%%%%%%%%%%%%%%%%%%% " + "\n\n--------IMPORTANT PATHS:\n\n--------PROBLEM DESCRIPTION:\n\n--------POSSIBLE SOLUTION:\n\n" + "%%%%%%%%%%%%%%%%%%% CREATED: " + str(
-                now)[:19] + " %%%%%%%%%%%%%%%%%%%\n\n")
+            "%%%%%%%%%%%%%%%%%%%%% ISSUE " + self.issue.number + " NOTES %%%%%%%%%%%%%%%%%%%%% " + "\n\n--------PROBLEM DESCRIPTION:\n\n--------OBSERVATIONS:\n\n--------POSSIBLE SOLUTION:\n\n" + "%%%%%%%%%%%%%%%%%% CREATED: " + str(
+                now)[:19] + " %%%%%%%%%%%%%%%%%%\n\n")
         file.close()
