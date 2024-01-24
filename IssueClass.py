@@ -37,13 +37,12 @@ class Issue:
             print("Created Issue " + number)
         except:
             self.number = -1
-            messagebox.showwarning("!PROBLEM!", "Not possible to create Issue " + number)
 
     def addNotes(self):
         os.chdir(self.path)
         now = datetime.now()
         file = open('Notes.txt', 'a')
         file.write(
-            "%%%%%%%%%%%%%%%%%%%%% ISSUE " + self.issue.number + " NOTES %%%%%%%%%%%%%%%%%%%%% " + "\n\n--------PROBLEM DESCRIPTION:\n\n--------OBSERVATIONS:\n\n--------POSSIBLE SOLUTION:\n\n" + "%%%%%%%%%%%%%%%%%% CREATED: " + str(
+            "%%%%%%%%%%%%%%%%%%%%% ISSUE " + self.number + " NOTES %%%%%%%%%%%%%%%%%%%%% " + "\n\n--------PROBLEM DESCRIPTION:\n\n--------OBSERVATIONS:\n\n--------POSSIBLE SOLUTION:\n\n" + "%%%%%%%%%%%%%%%%%% CREATED: " + str(
                 now)[:19] + " %%%%%%%%%%%%%%%%%%\n\n")
         file.close()

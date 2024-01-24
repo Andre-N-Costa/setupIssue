@@ -1,7 +1,9 @@
 import webbrowser
 
 from PySide6.QtCore import QTimer
-from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QLineEdit, QPlainTextEdit
+from PySide6.QtGui import QTextCursor
+from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QLineEdit, QPlainTextEdit, \
+    QComboBox
 from datetime import datetime
 
 
@@ -71,25 +73,26 @@ class IssueWindow(QWidget):
         self.timer = QTimer()
         self.timer.timeout.connect(self.cleanLabel)
 
+
         # Buttons creation and connection to methods on click
-        buttonS = QPushButton("Back")
-        buttonS.clicked.connect(self.back)
+        buttonB = QPushButton("Back")
+        buttonB.clicked.connect(self.back)
         buttonE = QPushButton("Open file")
         buttonE.clicked.connect(self.open)
         buttonA = QPushButton("Add Comment")
         buttonA.clicked.connect(self.add)
-        buttonR = QPushButton("Save")
-        buttonR.clicked.connect(self.save)
+        buttonS = QPushButton("Save")
+        buttonS.clicked.connect(self.save)
 
         # Building the layout
         buttons_layout = QHBoxLayout()
-        buttons_layout.addWidget(buttonS)
+        buttons_layout.addWidget(buttonB)
         buttons_layout.addWidget(buttonE)
         buttons_layout.addWidget(buttonA)
 
         issue_layout = QVBoxLayout()
         issue_layout.addLayout(buttons_layout)
-        issue_layout.addWidget(buttonR)
+        issue_layout.addWidget(buttonS)
         issue_layout.addWidget(self.note_text_edit)
         issue_layout.addWidget(self.info)
 
@@ -136,10 +139,3 @@ class IssueWindow(QWidget):
         print("Saved!")
         self.info.setText("Saved!")
         self.timer.start(5000)
-
-    """ Function that finds the text selected whats selected
-    def handleSelectionChanged(self):
-        cursor = self.edit.textCursor()
-        print("Selection start: %d end: %d" %
-              (cursor.selectionStart(), cursor.selectionEnd()))
-    """

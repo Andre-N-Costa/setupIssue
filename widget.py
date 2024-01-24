@@ -4,7 +4,7 @@ import shutil
 import threading
 
 from PySide6.QtCore import QTimer
-from PySide6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox
+from PySide6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox, QComboBox
 
 from IssueClass import Issue
 from issueWindow import IssueWindow
@@ -56,12 +56,18 @@ class Widget(QWidget):
         self.setWindowTitle("Issue Menu")
 
         # User input for the Issue Number
-        label = QLabel("Issue Number : ")
-        self.line_edit = QLineEdit()
+        label = QLabel("                Issue Number :")
+        self.combo_box = QComboBox(self)
+
         self.info = QLabel("")
         self.info.setProperty("type",1)
         self.timer = QTimer()
         self.timer.timeout.connect(self.cleanLabel)
+
+        self.combo_box.addItems([i.number for i in issue_list])
+
+        self.combo_box.setEditable(True)
+
 
         # Buttons creation and connection to methods on click
         buttonC = QPushButton("Create")
@@ -76,7 +82,9 @@ class Widget(QWidget):
         # Building the layout
         number_layout = QHBoxLayout()
         number_layout.addWidget(label)
-        number_layout.addWidget(self.line_edit)
+        number_layout.addWidget(self.combo_box)
+
+        number_layout.setSpacing(0)
 
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(buttonC)
@@ -97,21 +105,27 @@ class Widget(QWidget):
         print("Saved!")
         self.info.setText("Saved!")
         self.timer.start(5000)
+
     def createIssue(self):
         """
         It's created an Issue object, stored that object in issues_list and saved all the
         issues of issue_list outside the app in a file named issuesfile.pkl
         """
-        issue = Issue(self.line_edit.text())
-        self.issue_list.append(issue)
+        issue = Issue(self.combo_box.currentText())
+
+        print(issue.number)
 
         # Test if the issue was created successfully
         if issue.number != -1:
+            self.issue_list.append(issue)
             self.save()
-            self.info.setText(f"Issue {self.line_edit.text()} Created")
+            self.info.setText(f"Issue {self.combo_box.currentText()} Created")
+            print(f"Issue {self.combo_box.currentText()} Created")
+            self.combo_box.addItem(issue.number)
         else:
-            self.info.setText(f"Issue {self.line_edit.text()} Not Created")
-        print(f"Issue {self.line_edit.text()} Created")
+            self.ExistsPrompt()
+            self.info.setText(f"Issue {self.combo_box.currentText()} Not Created")
+            print(f"Issue {self.combo_box.currentText()} Not Created")
         self.timer.start(5000)
 
     def openIssue(self):
@@ -121,13 +135,13 @@ class Widget(QWidget):
         """
         found = False
         for i in self.issue_list:
-            if i.number == self.line_edit.text():
+            if i.number == self.combo_box.currentText():
                 found = True
                 self.issuewindow = IssueWindow(self.issue_list, i)
                 self.issuewindow.resize(750, 500)
                 self.issuewindow.show()
-                print(f"Issue {self.line_edit.text()} Opened")
-                self.info.setText(f"Issue {self.line_edit.text()} Opened")
+                print(f"Issue {self.combo_box.currentText()} Opened")
+                self.info.setText(f"Issue {self.combo_box.currentText()} Opened")
                 self.timer.start(5000)
 
         if not(found):
@@ -144,12 +158,12 @@ class Widget(QWidget):
         """
         os.chdir(r"C:\Users\andre.costa\Desktop\Farmatodo\Issues")
         for i in self.issue_list:
-            if i.number == self.line_edit.text():
+            if i.number == self.combo_box.currentText():
                 self.issue_list.remove(i)
                 shutil.rmtree(i.path)
                 self.save()
-                print("Deleted Issue " + self.line_edit.text())
-                self.info.setText("Deleted Issue " + self.line_edit.text())
+                print("Deleted Issue " + self.combo_box.currentText())
+                self.info.setText("Deleted Issue " + self.combo_box.currentText())
                 self.timer.start(5000)
                 return
         self.errorNonExistentPrompt()
@@ -160,7 +174,7 @@ class Widget(QWidget):
         chooses to go ahead and delete an Issue or cancel the action
         """
 
-        ret = QMessageBox.warning(self, "!",f"Are you sure you want to delete Issue {self.line_edit.text()}?"
+        ret = QMessageBox.warning(self, "!",f"Are you sure you want to delete Issue {self.combo_box.currentText()}?"
                                   ,QMessageBox.Yes | QMessageBox.Cancel)
 
         if ret == QMessageBox.Yes:
@@ -174,7 +188,19 @@ class Widget(QWidget):
         Creates a prompt message just to let the user know
         that the Issue they're trying to manage doesn't exist
         """
-        ret = QMessageBox.critical(self,"!!!",f"Issue {self.line_edit.text()} doesn't exist", QMessageBox.Ok)
+        ret = QMessageBox.warning(self,"!!!",f"Issue {self.combo_box.currentText()} doesn't exist", QMessageBox.Ok)
 
         if ret == QMessageBox.Ok:
+            print(f"Issue {self.combo_box.currentText()} doesn't exist")
+            return
+
+    def ExistsPrompt(self):
+        """
+        Creates a prompt message just to let the user know
+        that the Issue they're trying to manage doesn't exist
+        """
+        ret = QMessageBox.warning(self,"!!!",f"Issue {self.combo_box.currentText()} already exists", QMessageBox.Ok)
+
+        if ret == QMessageBox.Ok:
+            print(f"Issue {self.combo_box.currentText()} already exists")
             return

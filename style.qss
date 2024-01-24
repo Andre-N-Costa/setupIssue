@@ -2,6 +2,7 @@
 QWidget{
 background-color:#383335;
 font-family: "Times New Roman";
+color: white;
 }
 
 QLabel[type="1"]{
@@ -12,22 +13,20 @@ font-style: italic;
 
 QLabel{
 font-size: 17px;
-color: white;
+padding-right: 40px;
 }
 
 QPushButton{
 font-size: 15px;
 padding: 10px;
 background-color:#c42d50;
-color: white;
-}
-
-QLineEdit{
-font-size: 17px;
-color: white;
 }
 
 QPlainTextEdit{
 font-size: 15px;
+}
+
+QComboBox{
 color: white;
+font-size: 17px;
 }
