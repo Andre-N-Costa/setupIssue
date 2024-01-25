@@ -113,8 +113,6 @@ class Widget(QWidget):
         """
         issue = Issue(self.combo_box.currentText())
 
-        print(issue.number)
-
         # Test if the issue was created successfully
         if issue.number != -1:
             self.issue_list.append(issue)
@@ -159,12 +157,21 @@ class Widget(QWidget):
         os.chdir(r"C:\Users\andre.costa\Desktop\Farmatodo\Issues")
         for i in self.issue_list:
             if i.number == self.combo_box.currentText():
+                #Remove issue from issue_list
                 self.issue_list.remove(i)
+
+                #Remove issue folder
                 shutil.rmtree(i.path)
                 self.save()
                 print("Deleted Issue " + self.combo_box.currentText())
                 self.info.setText("Deleted Issue " + self.combo_box.currentText())
+
+                #Remove issue number from combo box
+                AllItems = [self.combo_box.itemText(i) for i in range(self.combo_box.count())]
+                i = AllItems.index(self.combo_box.currentText())
+                self.combo_box.removeItem(i)
                 self.timer.start(5000)
+
                 return
         self.errorNonExistentPrompt()
 

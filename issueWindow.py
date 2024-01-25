@@ -77,7 +77,7 @@ class IssueWindow(QWidget):
         # Buttons creation and connection to methods on click
         buttonB = QPushButton("Back")
         buttonB.clicked.connect(self.back)
-        buttonE = QPushButton("Open file")
+        buttonE = QPushButton("Open folder")
         buttonE.clicked.connect(self.open)
         buttonA = QPushButton("Add Comment")
         buttonA.clicked.connect(self.add)
@@ -112,8 +112,8 @@ class IssueWindow(QWidget):
         """
         Opens the .txt file that contains the notes of the Issue
         """
-        print("Opening Notes...")
-        webbrowser.open(self.issue.path + '\\' + "Notes.txt")
+        print("Opening Folder...")
+        webbrowser.open(self.issue.path)
         print("Done")
 
     def add(self):
