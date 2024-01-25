@@ -56,7 +56,7 @@ class Widget(QWidget):
         self.setWindowTitle("Issue Menu")
 
         # User input for the Issue Number
-        label = QLabel("                Issue Number :")
+        label = QLabel("Issue Number:")
         self.combo_box = QComboBox(self)
 
         self.info = QLabel("")
@@ -80,19 +80,14 @@ class Widget(QWidget):
         buttonD.clicked.connect(self.warningPrompt)
 
         # Building the layout
-        number_layout = QHBoxLayout()
-        number_layout.addWidget(label)
-        number_layout.addWidget(self.combo_box)
-
-        number_layout.setSpacing(0)
-
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(buttonC)
         buttons_layout.addWidget(buttonO)
         buttons_layout.addWidget(buttonD)
 
         menu_layout = QVBoxLayout()
-        menu_layout.addLayout(number_layout)
+        menu_layout.addWidget(label)
+        menu_layout.addWidget(self.combo_box)
         menu_layout.addLayout(buttons_layout)
         menu_layout.addWidget(self.info)
 
