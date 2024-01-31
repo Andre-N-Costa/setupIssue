@@ -1,6 +1,7 @@
+import os
 import webbrowser
 
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, QRect
 from PySide6.QtGui import QTextCursor
 from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QLineEdit, QPlainTextEdit, \
     QComboBox
@@ -62,17 +63,24 @@ class IssueWindow(QWidget):
                 notes = notes + line
         f.close()
 
+        # Retrieving the name of all the files in the issue folder
+        filesname = []
+
+        for path in os.listdir(self.issue.path):
+            if os.path.isfile(os.path.join(self.issue.path, path)):
+                filesname.append(path)
+
         # Creating the text box for the notes and populating it
         self.note_text_edit = QPlainTextEdit()
         self.note_text_edit.setPlainText(notes)
 
-        #Label that stays in the bottom of the window and gives information about the user actions
+        self.filelabel = QLabel("Folder files")
 
+        #Label that stays in the bottom of the window and gives information about the user actions
         self.info = QLabel("")
         self.info.setProperty("type",1)
         self.timer = QTimer()
         self.timer.timeout.connect(self.cleanLabel)
-
 
         # Buttons creation and connection to methods on click
         buttonB = QPushButton("Back")
@@ -90,13 +98,35 @@ class IssueWindow(QWidget):
         buttons_layout.addWidget(buttonE)
         buttons_layout.addWidget(buttonA)
 
-        issue_layout = QVBoxLayout()
-        issue_layout.addLayout(buttons_layout)
-        issue_layout.addWidget(buttonS)
-        issue_layout.addWidget(self.note_text_edit)
-        issue_layout.addWidget(self.info)
+        files_layout = QVBoxLayout()
 
-        self.setLayout(issue_layout)
+        files_layout.addStretch()
+
+        files_layout.addWidget(self.filelabel)
+
+        for file in filesname:
+            button = QPushButton(file, self)
+            button.setProperty("type", 1)
+            button.clicked.connect(self.openfiles)
+            files_layout.addWidget(button)
+
+        files_layout.addStretch()
+
+        actionsNtext_layout = QVBoxLayout()
+        actionsNtext_layout.addLayout(buttons_layout)
+        actionsNtext_layout.addWidget(buttonS)
+        actionsNtext_layout.addWidget(self.note_text_edit)
+        actionsNtext_layout.addWidget(self.info)
+
+        full_layout = QHBoxLayout()
+        full_layout.addLayout(files_layout)
+        full_layout.addLayout(actionsNtext_layout)
+
+        self.setLayout(full_layout)
+
+    def openfiles(self):
+        sender = self.sender()
+        webbrowser.open(self.issue.path + r'\\' + sender.text())
 
     def cleanLabel(self):
         self.info.setText("")

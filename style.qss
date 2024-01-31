@@ -13,7 +13,6 @@ font-style: italic;
 
 QLabel{
 font-size: 17px;
-padding-right: 40px;
 }
 
 QPushButton{
@@ -22,8 +21,15 @@ padding: 10px;
 background-color:#c42d50;
 }
 
+QPushButton[type="1"]{
+font-size:12px;
+padding:2px;
+background-color:#8a2139;
+}
+
 QPlainTextEdit{
 font-size: 15px;
+color: gray;
 }
 
 QComboBox{
