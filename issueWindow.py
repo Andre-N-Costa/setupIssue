@@ -75,6 +75,7 @@ class IssueWindow(QWidget):
         self.note_text_edit.setPlainText(notes)
 
         self.filelabel = QLabel("Folder files")
+        self.filelabel.setProperty("type", 2)
 
         #Label that stays in the bottom of the window and gives information about the user actions
         self.info = QLabel("")

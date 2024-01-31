@@ -11,6 +11,10 @@ color: lightgray;
 font-style: italic;
 }
 
+QLabel[type="2"]{
+font-size: 17px;
+}
+
 QLabel{
 font-size: 17px;
 }
@@ -29,7 +33,7 @@ background-color:#8a2139;
 
 QPlainTextEdit{
 font-size: 15px;
-color: gray;
+color: darkgray;
 }
 
 QComboBox{

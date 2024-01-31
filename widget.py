@@ -131,7 +131,7 @@ class Widget(QWidget):
             if i.number == self.combo_box.currentText():
                 found = True
                 self.issuewindow = IssueWindow(self.issue_list, i)
-                self.issuewindow.resize(750, 500)
+                self.issuewindow.resize(800, 600)
                 self.issuewindow.show()
                 print(f"Issue {self.combo_box.currentText()} Opened")
                 self.info.setText(f"Issue {self.combo_box.currentText()} Opened")
